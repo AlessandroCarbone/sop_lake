@@ -1,6 +1,6 @@
 <div align="center">
-  <img src="docs/assets/soplake_logo.png" width="300"/>
-  <img src="docs/assets/sop_lake_text.png" width="300"/>
+  <img src="docs/assets/soplake_logo.png" width="400"/><br/>
+  <img src="docs/assets/sop_lake_text.png" width="400"/>
 </div>
 
 # sop_lake: a computational framework for dynamical quantum embedding based on sum-over-pole representations
