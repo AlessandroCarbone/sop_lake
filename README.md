@@ -1,5 +1,5 @@
-![Project Logo](docs/assets/soplake_logo.png)
-![Project_name_logo](docs/assets/sop_lake_text.png)
+<img src="docs/assets/soplake_logo.png" width="300"/>
+<img src="docs/assets/sop_lake_text.png" width="300"/>
 
 # sop_lake: a computational framework for dynamical quantum embedding based on sum-over-pole representations
 
@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Build Status](https://github.com/AlessandroCarbone/sop_lake/workflows/tests/badge.svg)](https://github.com/AlessandroCarbone/sop_lake/actions)
 
-A Python implementation of Dynamical Mean-Field Theory (DMFT) based on a sum-over-poles (SOP) representation of Green's functions. The framework performs the DMFT self-consistent cycle directly on or near the real frequency axis, bypassing the need for analytic continuation from the Matsubara axis.
+A Python implementation of Dynamical Mean-Field Theory (DMFT) based on a sum-over-poles (SOP) representation of Green's functions. The framework performs the DMFT self-consistent cycle directly close to the real frequency axis, bypassing the need for analytic continuation from the Matsubara axis.
 
 ## Physical context
 
