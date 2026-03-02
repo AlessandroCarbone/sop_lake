@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sop_lake"
+version = "0.1.0"
+description = "Dynamical Mean Field Theory with Auxiliary Impurity Model"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Alessandro Carbone", email = "alessandro.carbone@epfl.ch"}
+]
+keywords = ["DMFT", "impurity solver", "strongly correlated systems", "condensed matter"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+
+dependencies = [
+    "numpy>=1.19.0",
+    "scipy>=1.5.0",
+    "pyyaml>=5.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0.0",
+    "pytest-cov>=2.10.0",
+    "black>=21.0",
+    "flake8>=3.9.0",
+    "mypy>=0.910",
+]
+docs = [
+    "sphinx>=4.0.0",
+    "sphinx-rtd-theme>=0.5.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/AlessandroCarbone/sop_lake"
+Documentation = "https://github.com/AlessandroCarbone/sop_lake/wiki"
+Repository = "https://github.com/AlessandroCarbone/sop_lake.git"
+Issues = "https://github.com/AlessandroCarbone/sop_lake/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 100
+target-version = ['py38']
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
