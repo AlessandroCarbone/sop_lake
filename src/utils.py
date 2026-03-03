@@ -162,9 +162,6 @@ def save_list(w_list, complex_list, file):
             print("{:<18} {:<18} {:<18}".format(w,val.real,val.imag),file=file)
         print("# End of file", file=file)
 
-def Matsubara_freq(n, beta):
-    return (2*n + 1) * np.pi / beta
-
 def remove_input_files(path_to_dir):
     for filename in os.listdir(path_to_dir):
         if filename.endswith("input.txt"):
