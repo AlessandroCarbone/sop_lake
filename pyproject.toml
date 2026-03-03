@@ -5,14 +5,14 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "sop_lake"
 version = "0.1.0"
-description = "Dynamical Mean Field Theory with Auxiliary Impurity Model"
+description = "Sum-over-pole (SOP) framework for quantum embedding in dynamical mean-field theory (DMFT)"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
     {name = "Alessandro Carbone", email = "alessandro.carbone@epfl.ch"}
 ]
-keywords = ["DMFT", "impurity solver", "strongly correlated systems", "condensed matter"]
+keywords = ["DMFT", "impurity solver", "strongly correlated systems", "quantum embedding"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
@@ -54,6 +54,9 @@ Issues = "https://github.com/AlessandroCarbone/sop_lake/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
 
 [tool.black]
 line-length = 100
