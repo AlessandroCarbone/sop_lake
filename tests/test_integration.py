@@ -128,7 +128,7 @@ class TestEmbeddingConfig:
         assert cfg.max_iter == 300
         assert cfg.num_poles == 4
         assert cfg.p_type == "sqrt"
-        assert cfg.axis == "shift"
+        assert cfg.axis == "imaginary"
 
     def test_matsubara_params_set_by_post_init(self):
         from src.dmft_config import embedding_config
@@ -208,7 +208,7 @@ class TestLoadSimConfig:
         cfg = load_sim_config(path)
         assert cfg.system.size == 100
         assert cfg.system.t == 1.0
-        assert cfg.system.U == 4.0
+        assert cfg.system.U == 1.0
         assert cfg.system.sizeA == 1
 
     def test_embedding_parameters(self, tmp_path):
@@ -217,7 +217,7 @@ class TestLoadSimConfig:
         cfg = load_sim_config(path)
         assert cfg.embedding.num_poles == 4
         assert cfg.embedding.p_type == "sqrt"
-        assert cfg.embedding.axis == "shift"
+        assert cfg.embedding.axis == "imaginary"
         assert cfg.embedding.num_pts == 100
 
     def test_optimization_parameters(self, tmp_path):
