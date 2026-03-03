@@ -1,6 +1,8 @@
 import numpy                        as np
 import json, os
+import matplotlib
 import matplotlib.pyplot            as plt
+matplotlib.rcParams['text.usetex'] = True
 
 from SOP            import SOP
 

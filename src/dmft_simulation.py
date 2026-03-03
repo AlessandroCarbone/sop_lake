@@ -1,7 +1,8 @@
 import numpy            as np
 import scipy
 from scipy              import linalg           as LA
-import yaml
+import yaml  # type: ignore[import-untyped]
+from typing             import Any
 import json
 import time
 import logging
@@ -52,7 +53,7 @@ class dmft_simulation:
         self.Gimp_SOP_prev   = None
 
         # Convergence history and optimization data
-        self.conv_history = {
+        self.conv_history: dict[str, list] = {
             "iter": [],
             "mu": [],
             "diff_loc": [],
@@ -61,7 +62,7 @@ class dmft_simulation:
             "cost": [],
             "grad_cost": []
         }
-        self.opt_data = {}
+        self.opt_data: dict[str, Any] = {}
 
         self.hamiltonian_matrices = [None, None, None]                                      # Cached matrices for building auxiliary Hamiltonian (HA_AIM, hc_AIM_list, hb_AIM_list)
         self.solver_matrices = [None, None, None]                                           # Cached matrices for solver operators (NA_AIM, N_AIM_op, fermionic_op_list)

@@ -1,6 +1,6 @@
 import numpy            as np
 import scipy
-import yaml
+import yaml  # type: ignore[import-untyped]
 import logging
 from dataclasses        import dataclass, field
 from typing             import Optional
