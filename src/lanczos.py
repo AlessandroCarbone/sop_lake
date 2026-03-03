@@ -50,12 +50,15 @@ def lanczos_basis(phi0,H,dim):
     phi = H @ phi0 - a0 * phi0                            # First element of the Lanczos basis  
     for i in range(2,dim + 2):
         b = LA.norm(phi)
-        if b == 0.0:
+        if b < 1e-14:
             break
         phi = phi / b
-        b_list.append(b) 
+        b_list.append(b)
         phi, _ = biorthogonalize_vector(phi,phi.conj(),phi_list,[el.conj() for el in phi_list])
-        phi = phi / LA.norm(phi)
+        norm_phi = LA.norm(phi)
+        if norm_phi < 1e-14:
+            break
+        phi = phi / norm_phi
         phi_list.append(phi)          
         a = phi.conj() @ H @ phi
         a_list.append(a)
