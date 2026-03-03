@@ -1,11 +1,15 @@
 import numpy                        as np
 import json, os
-import matplotlib
-matplotlib.use('Agg')                       # Use a non-interactive backend for plotting
-import matplotlib.pyplot            as plt
-matplotlib.rcParams['text.usetex'] = True
+try:
+    import matplotlib
+    matplotlib.use('Agg')                       # Use a non-interactive backend for plotting
+    import matplotlib.pyplot            as plt
+    matplotlib.rcParams['text.usetex'] = True
+    _HAS_MATPLOTLIB = True
+except ImportError:
+    _HAS_MATPLOTLIB = False
 
-from SOP            import SOP
+from src.SOP        import SOP
 
 def read_dmft_data(file: str):
     with open(file, "r") as f:
