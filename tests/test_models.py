@@ -19,7 +19,7 @@ class TestSOPInit:
     """SOP object stores residues, poles, and derived attributes correctly."""
 
     def test_scalar_sop(self):
-        from SOP import SOP
+        from src.SOP import SOP
         Gamma = [np.array([[1.0 + 0j]])]
         sigma = [0.0]
         sop = SOP(Gamma, sigma, p_type="std")
@@ -28,7 +28,7 @@ class TestSOPInit:
         assert sop.p_type == "std"
 
     def test_matrix_sop(self):
-        from SOP import SOP
+        from src.SOP import SOP
         Gamma = [np.eye(2, dtype=complex), np.eye(2, dtype=complex)]
         sigma = [-1.0, 1.0]
         sop = SOP(Gamma, sigma)
@@ -36,7 +36,7 @@ class TestSOPInit:
         assert sop.dim == 2
 
     def test_sqrt_ptype(self):
-        from SOP import SOP
+        from src.SOP import SOP
         Gamma = [np.eye(2, dtype=complex)]
         sop = SOP(Gamma, [0.0], p_type="sqrt")
         assert sop.p_type == "sqrt"
@@ -51,7 +51,7 @@ class TestSOPEvaluate:
 
     def test_single_pole_std(self):
         """G(w) = Gamma / (w - sigma) for a single-pole SOP."""
-        from SOP import SOP
+        from src.SOP import SOP
         Gamma = np.array([[2.0 + 0j]])
         sigma = 1.0
         sop = SOP([Gamma], [sigma], p_type="std")
@@ -62,7 +62,7 @@ class TestSOPEvaluate:
 
     def test_two_pole_cancellation(self):
         """G(0) = 1/(0-(-1)) + 1/(0-1) = 1 - 1 = 0."""
-        from SOP import SOP
+        from src.SOP import SOP
         G = [np.array([[1.0 + 0j]]), np.array([[1.0 + 0j]])]
         s = [-1.0, 1.0]
         sop = SOP(G, s, p_type="std")
@@ -71,7 +71,7 @@ class TestSOPEvaluate:
 
     def test_sqrt_ptype_evaluation(self):
         """sqrt parametrization: G(w) = Gamma @ Gamma / (w - sigma)."""
-        from SOP import SOP
+        from src.SOP import SOP
         Gamma = np.array([[2.0 + 0j]])
         sigma = 0.0
         sop = SOP([Gamma], [sigma], p_type="sqrt")
@@ -82,7 +82,7 @@ class TestSOPEvaluate:
 
     def test_complex_frequency(self):
         """Evaluation works on the shifted real axis (complex w)."""
-        from SOP import SOP
+        from src.SOP import SOP
         Gamma = np.array([[1.0 + 0j]])
         sop = SOP([Gamma], [0.0], p_type="std")
         w = complex(1.0, -0.5)
@@ -92,7 +92,7 @@ class TestSOPEvaluate:
 
     def test_output_shape_multiple_freqs(self):
         """evaluate(w_list) should return shape (n_freqs, dim, dim)."""
-        from SOP import SOP
+        from src.SOP import SOP
         Gamma = np.eye(2, dtype=complex)
         sop = SOP([Gamma], [0.0], p_type="std")
         w_list = [1.0, 2.0, 3.0]
@@ -100,7 +100,7 @@ class TestSOPEvaluate:
         assert result.shape == (3, 2, 2)
 
     def test_unknown_ptype_raises(self):
-        from SOP import SOP
+        from src.SOP import SOP
         sop = SOP([np.array([[1.0 + 0j]])], [0.0])
         sop.p_type = "bad"
         with pytest.raises(ValueError):
@@ -115,7 +115,7 @@ class TestSOPManipulations:
     """sort, is_odd, to_dict, make_residues_hermitian, make_poles_real."""
 
     def test_sort_by_real_pole(self):
-        from SOP import SOP
+        from src.SOP import SOP
         G = [np.array([[1.0 + 0j]]), np.array([[2.0 + 0j]]), np.array([[3.0 + 0j]])]
         s = [2.0, -1.0, 0.5]
         sop = SOP(G, s)
@@ -128,7 +128,7 @@ class TestSOPManipulations:
 
     def test_is_odd_true(self):
         """antisymm_SOP produces an odd spectrum."""
-        from SOP import SOP, antisymm_SOP
+        from src.SOP import SOP, antisymm_SOP
         half_G = [np.array([[1.0 + 0j]])]
         half_s = [1.0]
         G, s = antisymm_SOP(half_G, half_s)
@@ -136,13 +136,13 @@ class TestSOPManipulations:
         assert sop.is_odd() == True
 
     def test_is_odd_false(self):
-        from SOP import SOP
+        from src.SOP import SOP
         G = [np.array([[1.0 + 0j]]), np.array([[2.0 + 0j]])]
         sop = SOP(G, [-1.0, 1.0])
         assert sop.is_odd() == False
 
     def test_to_dict_keys(self):
-        from SOP import SOP
+        from src.SOP import SOP
         sop = SOP([np.eye(2, dtype=complex)], [0.5], p_type="std")
         d = sop.to_dict()
         assert set(d.keys()) == {"Gamma_list", "sigma_list", "p_type"}
@@ -150,7 +150,7 @@ class TestSOPManipulations:
 
     def test_make_residues_hermitian(self):
         """Non-Hermitian residue is replaced by its Hermitian projection."""
-        from SOP import SOP
+        from src.SOP import SOP
         Gamma = np.array([[1.0 + 0j, 0.5 + 1j], [0.0 + 0j, 1.0 + 0j]])
         sop = SOP([Gamma.copy()], [0.0])
         sop.make_residues_hermitian()
@@ -159,7 +159,7 @@ class TestSOPManipulations:
 
     def test_make_residues_pos_semidef_requires_std(self):
         """make_residues_pos_semidef raises for sqrt p_type."""
-        from SOP import SOP
+        from src.SOP import SOP
         sop = SOP([np.eye(2, dtype=complex)], [0.0], p_type="sqrt")
         with pytest.raises(ValueError):
             sop.make_residues_pos_semidef()
@@ -173,7 +173,7 @@ class TestSOPParameters:
     """SOP_to_params / params_to_SOP round-trip."""
 
     def test_round_trip_1x1(self):
-        from SOP import SOP_to_params, params_to_SOP
+        from src.SOP import SOP_to_params, params_to_SOP
         G = [np.array([[1.0 + 0.5j]])]
         s = [complex(0.5, 0.0)]
         params = SOP_to_params(G, s)
@@ -182,7 +182,7 @@ class TestSOPParameters:
         assert np.isclose(s_out[0], s[0])
 
     def test_round_trip_2x2(self):
-        from SOP import SOP_to_params, params_to_SOP
+        from src.SOP import SOP_to_params, params_to_SOP
         G = [np.array([[1.0 + 0j, 0.2 + 0.1j], [0.3 - 0.1j, 0.8 + 0j]])]
         s = [complex(0.5, 0.0)]
         params = SOP_to_params(G, s)
@@ -190,7 +190,7 @@ class TestSOPParameters:
         assert np.allclose(G_out[0], G[0])
 
     def test_from_params_classmethod(self):
-        from SOP import SOP, SOP_to_params
+        from src.SOP import SOP, SOP_to_params
         G = [np.array([[2.0 + 0j]])]
         s = [1.0]
         params = SOP_to_params(G, s)
@@ -200,7 +200,7 @@ class TestSOPParameters:
 
     def test_get_params_and_from_params(self):
         """get_params() → from_params() round-trip."""
-        from SOP import SOP
+        from src.SOP import SOP
         G = [np.array([[2.0 + 1j]])]
         s = [complex(-0.5, 0.0)]
         sop = SOP(G, s)
@@ -217,27 +217,27 @@ class TestSOPParameters:
 class TestAdaptResidues:
 
     def test_std_to_sqrt(self):
-        from SOP import adapt_residues
+        from src.SOP import adapt_residues
         Gamma = np.array([[4.0 + 0j, 0.0 + 0j], [0.0 + 0j, 9.0 + 0j]])
         result = adapt_residues([Gamma], "std", "sqrt")
         expected = LA.sqrtm(Gamma)
         assert np.allclose(result[0], expected)
 
     def test_sqrt_to_std(self):
-        from SOP import adapt_residues
+        from src.SOP import adapt_residues
         Gamma = np.array([[2.0 + 0j, 0.0 + 0j], [0.0 + 0j, 3.0 + 0j]])
         result = adapt_residues([Gamma], "sqrt", "std")
         expected = Gamma @ Gamma
         assert np.allclose(result[0], expected)
 
     def test_same_type_noop(self):
-        from SOP import adapt_residues
+        from src.SOP import adapt_residues
         Gamma = np.eye(2, dtype=complex)
         result = adapt_residues([Gamma], "std", "std")
         assert np.allclose(result[0], Gamma)
 
     def test_invalid_type_raises(self):
-        from SOP import adapt_residues
+        from src.SOP import adapt_residues
         with pytest.raises(ValueError):
             adapt_residues([np.eye(2, dtype=complex)], "std", "invalid")
 
@@ -249,7 +249,7 @@ class TestAdaptResidues:
 class TestAntisymmSOP:
 
     def test_pole_antisymmetry(self):
-        from SOP import antisymm_SOP
+        from src.SOP import antisymm_SOP
         half_G = [np.array([[1.0 + 0j]])]
         half_s = [2.0]
         G, s = antisymm_SOP(half_G, half_s)
@@ -257,7 +257,7 @@ class TestAntisymmSOP:
         assert np.isclose(s[1], -2.0)
 
     def test_residue_symmetry(self):
-        from SOP import antisymm_SOP
+        from src.SOP import antisymm_SOP
         half_G = [np.array([[1.0 + 0j]]), np.array([[2.0 + 0j]])]
         half_s = [1.0, 2.0]
         G, s = antisymm_SOP(half_G, half_s)
@@ -266,7 +266,7 @@ class TestAntisymmSOP:
         assert np.allclose(G[1], G[2])
 
     def test_full_sop_is_odd(self):
-        from SOP import SOP, antisymm_SOP
+        from src.SOP import SOP, antisymm_SOP
         half_G = [np.array([[0.5 + 0j]]), np.array([[0.3 + 0j]])]
         half_s = [0.5, 1.5]
         G, s = antisymm_SOP(half_G, half_s)
@@ -282,28 +282,28 @@ class TestAntisymmSOP:
 class TestHubbardModel:
 
     def test_single_site(self):
-        from hubbard import Hubbarb_Ham_1D
+        from src.hubbard import Hubbarb_Ham_1D
         H = Hubbarb_Ham_1D(t=1.0, U=4.0, N=1, bc=0)
         assert H is not None
 
     def test_two_site_chain(self):
-        from hubbard import Hubbarb_Ham_1D
+        from src.hubbard import Hubbarb_Ham_1D
         H = Hubbarb_Ham_1D(t=1.0, U=4.0, N=2, bc=0)
         assert H is not None
 
     def test_hopping_hamiltonian(self):
-        from hubbard import hopping_Ham_1D
+        from src.hubbard import hopping_Ham_1D
         h = hopping_Ham_1D(t=1.0, N=2, bc=0)
         assert h is not None
 
     def test_onsite_hamiltonian(self):
-        from hubbard import onsite_Ham_1D
+        from src.hubbard import onsite_Ham_1D
         H_onsite = onsite_Ham_1D(U=4.0, N=2)
         assert H_onsite is not None
 
     def test_prepare_small_system(self):
         """For N < 7 full system Hamiltonians are returned."""
-        from hubbard import prepare_Hubbard_Hamiltonians
+        from src.hubbard import prepare_Hubbard_Hamiltonians
         h, H, hA, HA = prepare_Hubbard_Hamiltonians(t=1.0, U=4.0, N=4, NA=2, bc=0)
         assert H is not None
         assert h is not None
@@ -311,7 +311,7 @@ class TestHubbardModel:
 
     def test_prepare_large_system(self):
         """For N >= 7 full system Hamiltonians are returned as None."""
-        from hubbard import prepare_Hubbard_Hamiltonians
+        from src.hubbard import prepare_Hubbard_Hamiltonians
         h, H, hA, HA = prepare_Hubbard_Hamiltonians(t=1.0, U=4.0, N=10, NA=2, bc=1)
         assert H is None
         assert h is None
