@@ -19,12 +19,13 @@ class Hubbard_system_config:
     t    : float            # Hopping parameter
     U    : float            # On-site interaction
     sizeA: int              # Number of sites in the fragment (impurity), referred to as "A" in the code
-    Np   : float            # Particle density
+    Np   : float            # Particle density per site
     bc   : int              # Boundary conditions: 1 for open, 0 for closed
     Np_tot  : float = field(init=False)
     epsk_list: list = field(init=False, default_factory=list)
 
     def __post_init__(self):
+        self.Np_tot    = self.Np * self.size
         self.epsk_list = self.calculate_epsk_list()
         self.ntot      = 2 * self.sizeA                 # Total dimension of the impurity problem (spin included)
 
