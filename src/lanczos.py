@@ -1,6 +1,10 @@
 import numpy                        as np
-import qiskit_nature
-from qiskit_nature.second_q.operators                   import FermionicOp
+try:
+    import qiskit_nature
+    from qiskit_nature.second_q.operators import FermionicOp
+except ImportError:
+    qiskit_nature = None
+    FermionicOp   = type(None)
 from scipy.sparse                                       import csc_matrix, csr_matrix, kron, vstack
 import scipy.linalg                  as LA
 import scipy.sparse.linalg           as SLA
@@ -33,7 +37,7 @@ def lanczos_basis(phi0,H,dim):
     phi0 : Initial vector as a ket
     dim  : Dimension of the Lanczos basis to be built
     """
-    if isinstance(H,qiskit_nature.second_q.operators.FermionicOp):
+    if isinstance(H,FermionicOp):
         H = FermionicOp_to_matrix(H,sparse=True)
     elif isinstance(H,np.ndarray): 
         H = csc_matrix(H)
@@ -80,7 +84,7 @@ def bilanczos_basis(phi0,chi0,H,dim):
     H    : Hamiltonian
     dim  : Dimension of the Lanczos basis to be built
     """
-    if isinstance(H,qiskit_nature.second_q.operators.FermionicOp):
+    if isinstance(H,FermionicOp):
         H = FermionicOp_to_matrix(H,sparse=True)
     elif isinstance(H,np.ndarray): 
         H = csc_matrix(H)

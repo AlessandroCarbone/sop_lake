@@ -1,12 +1,8 @@
 """Tests for utility functions, embedding utilities, and the Lanczos algorithm."""
 
-import sys
-import os
 import pytest
 import numpy as np
 from scipy import linalg as LA
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 try:
     import qiskit_nature

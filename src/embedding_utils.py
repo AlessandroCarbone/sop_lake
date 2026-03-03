@@ -2,8 +2,12 @@ import time, logging
 import numpy                as np
 import scipy
 import scipy.linalg         as LA
-import qiskit_nature
-from qiskit_nature.second_q.operators                   import FermionicOp
+try:
+    import qiskit_nature
+    from qiskit_nature.second_q.operators import FermionicOp
+except ImportError:
+    qiskit_nature = None
+    FermionicOp   = type(None)
 from scipy.sparse                                       import csc_matrix, kron
 from utils                                              import Matsubara_freq, is_pos_semidef, closest_pos_semidef, check_selfadjoint
 from mb_utils                                           import number_operator, compute_avg_GF, calc_g, FermionicOp_to_matrix
@@ -22,7 +26,7 @@ def create_mbAIMSOP_Hamiltonian(HA,SOP,input_matrices=[None,None,None],dmft_sim=
     method         : Method to be used to build the many-body AIM-SOP Hamiltonian: "qiskit", "quspin", or "openfermion"
     dmft_sim        : DMFT simulation class object (to update the input matrices if needed)
     """
-    if isinstance(HA,qiskit_nature.second_q.operators.FermionicOp):
+    if isinstance(HA,FermionicOp):
         ntot    = HA.register_length
         HA_mat = FermionicOp_to_matrix(HA,sparse=True)
     elif isinstance(HA,np.ndarray):

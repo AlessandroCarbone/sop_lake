@@ -3,14 +3,18 @@ import scipy
 from scipy.sparse                                       import csc_matrix, csr_matrix, kron, vstack
 import scipy.linalg                                     as LA
 import scipy.sparse.linalg as SLA
-import qiskit_nature
-from qiskit_nature.second_q.operators                   import FermionicOp
+try:
+    import qiskit_nature
+    from qiskit_nature.second_q.operators import FermionicOp
+except ImportError:
+    qiskit_nature = None
+    FermionicOp   = type(None)
 from itertools                                          import combinations
 from functools                                          import reduce
 from utils                                              import check_selfadjoint, diagonalize_Hamiltonian, FermionicOp_to_matrix
 
 def G_operator(H,w,sparse=False):
-    if isinstance(H,qiskit_nature.second_q.operators.FermionicOp):
+    if isinstance(H,FermionicOp):
         ntot   = H.register_length
         H_mat  = FermionicOp_to_matrix(H,sparse=sparse)
         dim    = 2**ntot
@@ -33,7 +37,7 @@ def G_operator(H,w,sparse=False):
     return Gop
 
 def number_operator(ntot):
-    """ This function returns the number operator as a qiskit_nature.second_q.operators.FermionicOp.
+    """ This function returns the number operator as a FermionicOp.
     ntot : Number of states on which the system is described 
     """
     N_terms = []
@@ -108,7 +112,7 @@ def operator_SD(op,Np,sparse=False):
     sparse [bool]    : If True the output matrix is in sparse format
     """
     
-    if isinstance(op,qiskit_nature.second_q.operators.FermionicOp):
+    if isinstance(op,FermionicOp):
         ntot   = op.register_length
         op_mat = FermionicOp_to_matrix(op,sparse=True)
     elif isinstance(op,np.ndarray):
@@ -158,7 +162,7 @@ def gs_subspace(H,max_gs_deg=7,sparse=True,self_adj_check=None):
     sparse     : If True, the ground state is evaluated using sparse diagonalization
     self_adj_check : If True, the self-adjointness of H is assumed
     """
-    if isinstance(H,qiskit_nature.second_q.operators.FermionicOp):
+    if isinstance(H,FermionicOp):
         H = FermionicOp_to_matrix(H,sparse=True)
     elif isinstance(H,np.ndarray): 
         H = csc_matrix(H)
@@ -212,7 +216,7 @@ def diagonalize_Fock_Hamiltonian(H,num_subspaces):
     """ This function return the eigenvalues and the right/left eigenvectors of a given Hamiltonian H assuming that H lives in the Fock space. The diagonalization is performed
     subspace by subspace for computational efficiency since the full-fermionic Fock space is the direct sum of the subspaces with fixed number of particles.
     """
-    if isinstance(H,qiskit_nature.second_q.operators.FermionicOp):
+    if isinstance(H,FermionicOp):
         H = FermionicOp_to_matrix(H,sparse=True)
     elif isinstance(H,np.ndarray): 
         H = csc_matrix(H)

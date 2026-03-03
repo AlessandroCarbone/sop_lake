@@ -1,13 +1,9 @@
 """Integration tests for configuration loading and DMFT simulation setup."""
 
-import sys
-import os
 import pytest
 import numpy as np
 import tempfile
 import yaml
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 try:
     import qiskit_nature

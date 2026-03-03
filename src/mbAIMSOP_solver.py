@@ -1,6 +1,10 @@
 import numpy                         as np
-import qiskit_nature
-from qiskit_nature.second_q.operators                   import FermionicOp
+try:
+    import qiskit_nature
+    from qiskit_nature.second_q.operators import FermionicOp
+except ImportError:
+    qiskit_nature = None
+    FermionicOp   = type(None)
 from scipy.sparse                                       import csc_matrix, csr_matrix, kron, vstack, hstack
 import scipy.linalg                  as LA
 import scipy.sparse.linalg           as SLA
@@ -80,7 +84,7 @@ class solver:
         mu, d_AIM, sparse_gs, H_AIM = self.mu, self.d_AIM, self.sparse_gs, self.H_AIM
         NA_AIM = self.input_matrices[0]
         if method == "std":
-            if isinstance(H_AIM,qiskit_nature.second_q.operators.FermionicOp):
+            if isinstance(H_AIM,FermionicOp):
                 H_AIM = FermionicOp_to_matrix(H_AIM,sparse=True)
             elif isinstance(H_AIM,np.ndarray): 
                 H_AIM = csc_matrix(H_AIM)
@@ -115,7 +119,7 @@ class solver:
     def diagonalize_Hamiltonian(self):
         mu, d_AIM = self.mu, self.d_AIM
         NA_AIM = self.get_operator_lists()[0]
-        if isinstance(H_AIM,qiskit_nature.second_q.operators.FermionicOp):
+        if isinstance(H_AIM,FermionicOp):
             H_AIM = FermionicOp_to_matrix(H_AIM,sparse=True)
         elif isinstance(H_AIM,np.ndarray): 
             H_AIM = csc_matrix(H_AIM) 

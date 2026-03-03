@@ -4,9 +4,14 @@ import scipy
 import scipy.linalg     as LA
 from scipy.sparse       import csc_matrix, isspmatrix
 from sympy              import Matrix
-import qiskit_nature
-from qiskit_nature.second_q.operators                   import FermionicOp
-from qiskit_nature.second_q.mappers                     import JordanWignerMapper
+try:
+    import qiskit_nature
+    from qiskit_nature.second_q.operators import FermionicOp
+    from qiskit_nature.second_q.mappers   import JordanWignerMapper
+except ImportError:
+    qiskit_nature      = None
+    FermionicOp        = type(None)
+    JordanWignerMapper = None
 
 def check_selfadjoint(M,rtol=1e-05,atol=1e-08,sparse=False):
     """This function check is he matrix is self-adjoint in case it's sparse or not
@@ -25,7 +30,7 @@ def FermionicOp_to_matrix(op,sparse=False):
     op     : FermionicOp
     sparse : If the matrix is sparse must be put equal to True, otherwise to False
     """
-    if isinstance(op,qiskit_nature.second_q.operators.FermionicOp) == False:
+    if isinstance(op,FermionicOp) == False:
         raise ValueError('Error - op type must be Qiskit FermionicOp')
     jw_op = JordanWignerMapper().map(op)                                      # Jordan-Wigner mapper of Qiskit to do the transformation to a matrix
     # Here we have to correct the order of the Pauli operators in order to have the right mapping from qubit states to vector states in the Fock space: 0000 --> [1,0,0,0] , 1000 --> [0,1,0,0], ...
@@ -36,7 +41,7 @@ def FermionicOp_to_matrix(op,sparse=False):
     return mat
 
 def exp_value(op,psil,psir):
-    if isinstance(op,qiskit_nature.second_q.operators.FermionicOp):
+    if isinstance(op,FermionicOp):
         if isinstance(psil,scipy.sparse.csc.csc_matrix) or isinstance(psil,scipy.sparse.csr.csr_matrix):
             op_mat  = FermionicOp_to_matrix(op,sparse=True)
             exp_val = ( psil.conj() @ op_mat @ psir.T ) / ( psil.conj() @ psir.T )[0,0]
@@ -92,7 +97,7 @@ def check_diagonalizable(A):
     """This function checks if a matrix is diagonalizable by checking if algebraic and geometric multiplicities are the same
     A      : Hamiltonian or matrix
     """
-    if isinstance(A,qiskit_nature.second_q.operators.FermionicOp):
+    if isinstance(A,FermionicOp):
         A_mat = FermionicOp_to_matrix(A)
     elif isinstance(A,np.ndarray):
         A_mat = A
@@ -121,7 +126,7 @@ def order_of_magnitude(number):
 def diagonalize_Hamiltonian(H):
     """ This function return the eigenvalues and the right/left eigenvectors of a given Hamiltonian H.
     """
-    if isinstance(H,qiskit_nature.second_q.operators.FermionicOp):
+    if isinstance(H,FermionicOp):
         H = FermionicOp_to_matrix(H,sparse=True)
     elif isinstance(H,np.ndarray): 
         H = csc_matrix(H)

@@ -1,4 +1,7 @@
-from qiskit_nature.second_q.operators import FermionicOp
+try:
+    from qiskit_nature.second_q.operators import FermionicOp
+except ImportError:
+    FermionicOp = type(None)
 
 def Hubbarb_Ham_1D(t,U,N,bc):
     """Generate single-band (1 state/orbital for each site) 1D Hubbard Hamiltonian inside chain/ring
