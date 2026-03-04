@@ -138,9 +138,9 @@ class TestEmbeddingConfig:
 
     def test_custom_values(self):
         from src.dmft_config import embedding_config
-        cfg = embedding_config(num_poles=6, axis="imaginary", solver_method="lanczos")
+        cfg = embedding_config(num_poles=6, axis="shift", solver_method="lanczos")
         assert cfg.num_poles == 6
-        assert cfg.axis == "imaginary"
+        assert cfg.axis == "shift"
         assert cfg.solver_method == "lanczos"
 
 
