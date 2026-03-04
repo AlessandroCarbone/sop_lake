@@ -128,7 +128,7 @@ class TestEmbeddingConfig:
         assert cfg.max_iter == 300
         assert cfg.num_poles == 4
         assert cfg.p_type == "sqrt"
-        assert cfg.axis == "shift"
+        assert cfg.axis == "imaginary"
 
     def test_matsubara_params_set_by_post_init(self):
         from src.dmft_config import embedding_config
