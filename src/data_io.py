@@ -4,12 +4,12 @@ try:
     import matplotlib
     matplotlib.use('Agg')                       # Use a non-interactive backend for plotting
     import matplotlib.pyplot            as plt
-    matplotlib.rcParams['text.usetex'] = True
+    matplotlib.rcParams['text.usetex'] = False
     _HAS_MATPLOTLIB = True
 except ImportError:
     _HAS_MATPLOTLIB = False
 
-from src.SOP        import SOP
+from SOP        import SOP
 
 def read_dmft_data(file: str):
     with open(file, "r") as f:
@@ -86,8 +86,8 @@ def plot_dmft_results(w_list, indices, Gimpij_list, Glocij_list, SigmaAij_list, 
     i, j            = indices
     ylabels         = [r"Re", r"Im"]
     labels          = [r"$i={}$".format(i) , r"$j={}$".format(j)]
-    title           = r"Local and impurity GFs - $n_\text{{iter}} = {}$".format(n_iter)
-    title2          = r"Embedding potential $v_\text{{emb}}$ - $n_\text{{iter}} = {}$".format(n_iter)
+    title           = r"Local and impurity GFs - $n_{{iter}} = {}$".format(n_iter)
+    title2          = r"Embedding potential $v_{{emb}}$ - $n_{{iter}} = {}$".format(n_iter)
     subtitle        = "axis = {}".format(config.embedding.axis) 
     titles          = [title,title2]
     file_name       = "plots_{}_{}{}.pdf".format(n_iter,i,j)
@@ -97,8 +97,8 @@ def plot_dmft_results(w_list, indices, Gimpij_list, Glocij_list, SigmaAij_list, 
     fig.subplots_adjust(hspace=0)
     for k in range(2):
         # GF plots
-        ax[k,0].plot(w_list,Gimpij_list[k],label=r"$G_\text{imp}$",linewidth=3,linestyle="-",color=vik_red_palette[2])
-        ax[k,0].plot(w_list,Glocij_list[k],label=r"$G_\text{loc}$",linewidth=3,linestyle="--",color=vik_red_palette[3])
+        ax[k,0].plot(w_list,Gimpij_list[k],label=r"$G_{imp}$",linewidth=3,linestyle="-",color=vik_red_palette[2])
+        ax[k,0].plot(w_list,Glocij_list[k],label=r"$G_{loc}$",linewidth=3,linestyle="--",color=vik_red_palette[3])
         ax[k,0].plot(w_list,SigmaAij_list[k],label=r"$\Sigma_A$",linewidth=3,linestyle="-",color=vik_red_palette[1])
 
         # Embedding potential plots
