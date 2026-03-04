@@ -57,7 +57,7 @@ class embedding_config:
     num_poles : int = 4
     mu_fixed  : Optional[float] = None  # If not None, the fixed chemical potential during the DMFT cycle to the input value
     p_type    : str = "sqrt"            # Type of the residues of the embedding potential: "std" or "sqrt"
-    axis      : str = "shift"           # Axis for the mixing/fit of the embedding potential: "erf", "shift" or "imaginary"
+    axis      : str = "imaginary"        # Axis for the mixing/fit of the embedding potential: "erf", "shift" or "imaginary"
     eta_axis  : float = 0.5 if axis != "imaginary" else 0.0
     num_pts   : int = 10000             # Number of grid points for the erf axis and imaginary semi-axis (used for the integral) in the DMFT cycle
     beta_T    : float = 1500.           # Inverse temperature for the Matsubara frequencies - N.B. 2 * pi / beta gives the spacing between two consecutive frequencies
