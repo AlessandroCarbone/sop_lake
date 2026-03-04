@@ -1,6 +1,6 @@
 import numpy                                    as np
 from scipy              import linalg           as LA
-from utils              import check_selfadjoint, closest_hermitian, closest_pos_semidef, is_pos_semidef
+from .utils              import check_selfadjoint, closest_hermitian, closest_pos_semidef, is_pos_semidef
 
 def adapt_residues(Gamma_list, p_type0, p_type):
     """

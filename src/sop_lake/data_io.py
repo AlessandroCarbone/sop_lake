@@ -9,7 +9,7 @@ try:
 except ImportError:
     _HAS_MATPLOTLIB = False
 
-from SOP        import SOP
+from .SOP        import SOP
 
 def read_dmft_data(file: str):
     with open(file, "r") as f:

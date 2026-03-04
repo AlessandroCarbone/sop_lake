@@ -9,10 +9,10 @@ except ImportError:
     qiskit_nature = None
     FermionicOp   = type(None)
 from scipy.sparse                                       import csc_matrix, kron
-from utils                                              import Matsubara_freq, is_pos_semidef, closest_pos_semidef, check_selfadjoint
-from mb_utils                                           import number_operator, compute_avg_GF, calc_g, FermionicOp_to_matrix
-from SOP                                                import adapt_residues, SOP
-from AIMSOP_utils                                       import reversed_AIMSOP, AIMSOP_matrix
+from .utils                                              import Matsubara_freq, is_pos_semidef, closest_pos_semidef, check_selfadjoint
+from .mb_utils                                           import number_operator, compute_avg_GF, calc_g, FermionicOp_to_matrix
+from .SOP                                                import adapt_residues, SOP
+from .AIMSOP_utils                                       import reversed_AIMSOP, AIMSOP_matrix
 
 logger = logging.getLogger(__name__)
 

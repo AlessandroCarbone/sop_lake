@@ -5,12 +5,12 @@ import logging
 from dataclasses        import dataclass, field
 from typing             import Optional
 
-from utils              import check_selfadjoint
-from SOP                import SOP
-from hubbard            import prepare_Hubbard_Hamiltonians
-from embedding_utils    import frequency_axis, self_consistency_DMFT, linear_mixing_lists
-from mb_utils           import operator_SD, G_operator
-from data_io            import read_dmft_data, read_vemb_data, read_conv_history
+from .utils              import check_selfadjoint
+from .SOP                import SOP
+from .hubbard            import prepare_Hubbard_Hamiltonians
+from .embedding_utils    import frequency_axis, self_consistency_DMFT, linear_mixing_lists
+from .mb_utils           import operator_SD, G_operator
+from .data_io            import read_dmft_data, read_vemb_data, read_conv_history
 
 logger = logging.getLogger(__name__)
 @dataclass

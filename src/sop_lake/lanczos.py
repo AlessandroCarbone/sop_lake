@@ -9,7 +9,7 @@ from scipy.sparse                                       import csc_matrix, csr_m
 import scipy.linalg                  as LA
 import scipy.sparse.linalg           as SLA
 
-from utils                                              import to_scalar_if_sparse, FermionicOp_to_matrix
+from .utils                                              import to_scalar_if_sparse, FermionicOp_to_matrix
 
 def biorthogonalize_vector(phi,chi,phi_list,chi_list):
     if len(phi_list) != len(chi_list):

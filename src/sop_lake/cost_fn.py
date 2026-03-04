@@ -1,7 +1,7 @@
 import numpy         as np
 import scipy.linalg  as LA
-from dyn_poles_utils import find_relevant_peaks
-from SOP             import SOP, antisymm_SOP, params_to_SOP, SOP_to_params
+from .dyn_poles_utils import find_relevant_peaks
+from .SOP             import SOP, antisymm_SOP, params_to_SOP, SOP_to_params
 import time
 
 def weights_cost_func(func_list,w_list,min_height=0.5,cond="prominence",peak_dist=0.1):

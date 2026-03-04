@@ -11,7 +11,7 @@ except ImportError:
     FermionicOp   = type(None)
 from itertools                                          import combinations
 from functools                                          import reduce
-from utils                                              import check_selfadjoint, diagonalize_Hamiltonian, FermionicOp_to_matrix
+from .utils                                              import check_selfadjoint, diagonalize_Hamiltonian, FermionicOp_to_matrix
 
 def G_operator(H,w,sparse=False):
     if isinstance(H,FermionicOp):

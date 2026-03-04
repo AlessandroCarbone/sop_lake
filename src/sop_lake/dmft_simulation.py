@@ -8,13 +8,13 @@ import time
 import logging
 import matplotlib.pyplot as plt
 from contextlib         import redirect_stdout
-from SOP                import SOP, antisymm_SOP, adapt_residues
-from utils              import RMSE, check_sparsity, Np_from_A_isa
-from embedding_utils    import frequency_axis, create_mbAIMSOP_Hamiltonian, self_consistency_DMFT, linear_mixing_lists, DOS_diff
-from dmft_config        import sim_config, load_sim_config
-from dyn_poles          import compute_cost_function, compute_grad_cost_function, dyn_poles, params_to_SOP
-from mbAIMSOP_solver    import solver
-from data_io            import mat_list_to_dict, array_to_dict, plot_dmft_results, plot_convergence
+from .SOP                import SOP, antisymm_SOP, adapt_residues
+from .utils              import RMSE, check_sparsity, Np_from_A_isa
+from .embedding_utils    import frequency_axis, create_mbAIMSOP_Hamiltonian, self_consistency_DMFT, linear_mixing_lists, DOS_diff
+from .dmft_config        import sim_config, load_sim_config
+from .dyn_poles          import compute_cost_function, compute_grad_cost_function, dyn_poles, params_to_SOP
+from .mbAIMSOP_solver    import solver
+from .data_io            import mat_list_to_dict, array_to_dict, plot_dmft_results, plot_convergence
 
 logger = logging.getLogger(__name__)
 class dmft_simulation:

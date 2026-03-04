@@ -2,8 +2,8 @@ import numpy                            as np
 import scipy
 from scipy           import linalg       as LA
 from scipy.signal    import find_peaks, peak_prominences
-from utils           import check_selfadjoint, closest_hermitian, is_pos_semidef, closest_pos_semidef
-from SOP             import SOP, SOP_to_params, params_to_SOP
+from .utils           import check_selfadjoint, closest_hermitian, is_pos_semidef, closest_pos_semidef
+from .SOP             import SOP, SOP_to_params, params_to_SOP
 
 def set_fit_bounds(p0,M,dim,fixed_params_ind,mu=0.,eps=1e-3):
     """ This function sets the bounds in the fitting routine for the residues and the poles of the SOP. In general all poles have to be time ordered with respect to the chemical potential mu,

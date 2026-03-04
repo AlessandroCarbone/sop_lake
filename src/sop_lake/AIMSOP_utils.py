@@ -1,7 +1,7 @@
 import numpy        as np
 import scipy.linalg as LA
 
-from utils import check_selfadjoint
+from .utils import check_selfadjoint
 
 
 def AIMSOP_matrix(hA,Gamma_list,sigma_list,p_type="std"):

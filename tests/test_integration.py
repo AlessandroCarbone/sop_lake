@@ -72,7 +72,7 @@ SAMPLE_CONFIG = {
 class TestHubbardSystemConfig:
 
     def test_basic_initialization(self):
-        from dmft_config import Hubbard_system_config
+        from sop_lake.dmft_config import Hubbard_system_config
         cfg = Hubbard_system_config(size=100, t=1.0, U=1.0, sizeA=1, Np=1.0, bc=1)
         assert cfg.size == 100
         assert cfg.t == 1.0
@@ -81,19 +81,19 @@ class TestHubbardSystemConfig:
         assert cfg.Np == 1.0
 
     def test_ntot_is_twice_sizeA(self):
-        from dmft_config import Hubbard_system_config
+        from sop_lake.dmft_config import Hubbard_system_config
         cfg = Hubbard_system_config(size=100, t=1.0, U=1.0, sizeA=2, Np=1.0, bc=1)
         assert cfg.ntot == 4  # 2 * sizeA
 
     def test_epsk_list_length(self):
         """epsk_list should contain Nk = size/sizeA dispersion values."""
-        from dmft_config import Hubbard_system_config
+        from sop_lake.dmft_config import Hubbard_system_config
         cfg = Hubbard_system_config(size=100, t=1.0, U=1.0, sizeA=1, Np=1.0, bc=1)
         assert len(cfg.epsk_list) == 100
 
     def test_epsk_dispersion_formula(self):
         """ε_k = -2t cos(2πk/Nk)."""
-        from dmft_config import Hubbard_system_config
+        from sop_lake.dmft_config import Hubbard_system_config
         t = 1.0
         cfg = Hubbard_system_config(size=4, t=t, U=0.0, sizeA=1, Np=1.0, bc=1)
         Nk = 4
@@ -102,13 +102,13 @@ class TestHubbardSystemConfig:
 
     def test_epsk_sum_vanishes(self):
         """For a large ring, Σ_k ε_k = 0 (sum of cosines over full period)."""
-        from dmft_config import Hubbard_system_config
+        from sop_lake.dmft_config import Hubbard_system_config
         cfg = Hubbard_system_config(size=100, t=1.0, U=1.0, sizeA=1, Np=1.0, bc=1)
         assert np.isclose(sum(cfg.epsk_list), 0.0, atol=1e-10)
 
     def test_epsk_bandwidth(self):
         """For a 1D ring, band edges should be ±2t."""
-        from dmft_config import Hubbard_system_config
+        from sop_lake.dmft_config import Hubbard_system_config
         t = 1.0
         cfg = Hubbard_system_config(size=1000, t=t, U=1.0, sizeA=1, Np=1.0, bc=1)
         assert np.isclose(max(cfg.epsk_list), 2 * t, atol=1e-3)
@@ -123,7 +123,7 @@ class TestHubbardSystemConfig:
 class TestEmbeddingConfig:
 
     def test_default_values(self):
-        from dmft_config import embedding_config
+        from sop_lake.dmft_config import embedding_config
         cfg = embedding_config()
         assert cfg.max_iter == 300
         assert cfg.num_poles == 4
@@ -131,13 +131,13 @@ class TestEmbeddingConfig:
         assert cfg.axis == "imaginary"
 
     def test_matsubara_params_set_by_post_init(self):
-        from dmft_config import embedding_config
+        from sop_lake.dmft_config import embedding_config
         cfg = embedding_config(beta_T=100.0, Nw_max=500)
         assert cfg.matsubara_params["beta"] == 100.0
         assert cfg.matsubara_params["Nw_max"] == 500
 
     def test_custom_values(self):
-        from dmft_config import embedding_config
+        from sop_lake.dmft_config import embedding_config
         cfg = embedding_config(num_poles=6, axis="shift", solver_method="lanczos")
         assert cfg.num_poles == 6
         assert cfg.axis == "shift"
@@ -152,12 +152,12 @@ class TestEmbeddingConfig:
 class TestOptimizationConfig:
 
     def test_default_alpha(self):
-        from dmft_config import optimization_config
+        from sop_lake.dmft_config import optimization_config
         cfg = optimization_config()
         assert cfg.alpha == 0.5
 
     def test_bounds_mirror_flags(self):
-        from dmft_config import optimization_config
+        from sop_lake.dmft_config import optimization_config
         cfg = optimization_config(
             complex_poles=True,
             herm_residues=False,
@@ -170,14 +170,14 @@ class TestOptimizationConfig:
         assert cfg.bounds["paramagnetic"] == False
 
     def test_convergence_thresholds(self):
-        from dmft_config import optimization_config
+        from sop_lake.dmft_config import optimization_config
         cfg = optimization_config(thr_diff_prev=1e-6, RMSE_thr=0.1)
         assert cfg.thr_diff_prev == 1e-6
         assert cfg.RMSE_thr == 0.1
 
     def test_stagnation_default_relative_to_convergence(self):
         """By default thr_stagnation = thr_diff_prev * 0.1."""
-        from dmft_config import optimization_config
+        from sop_lake.dmft_config import optimization_config
         cfg = optimization_config()
         assert np.isclose(cfg.thr_stagnation, cfg.thr_diff_prev * 0.1)
 
@@ -197,13 +197,13 @@ class TestLoadSimConfig:
         return str(config_file)
 
     def test_returns_sim_config(self, tmp_path):
-        from dmft_config import load_sim_config, sim_config
+        from sop_lake.dmft_config import load_sim_config, sim_config
         path = self._write_config(tmp_path)
         cfg = load_sim_config(path)
         assert isinstance(cfg, sim_config)
 
     def test_system_parameters(self, tmp_path):
-        from dmft_config import load_sim_config
+        from sop_lake.dmft_config import load_sim_config
         path = self._write_config(tmp_path)
         cfg = load_sim_config(path)
         assert cfg.system.size == 100
@@ -212,7 +212,7 @@ class TestLoadSimConfig:
         assert cfg.system.sizeA == 1
 
     def test_embedding_parameters(self, tmp_path):
-        from dmft_config import load_sim_config
+        from sop_lake.dmft_config import load_sim_config
         path = self._write_config(tmp_path)
         cfg = load_sim_config(path)
         assert cfg.embedding.num_poles == 4
@@ -221,7 +221,7 @@ class TestLoadSimConfig:
         assert cfg.embedding.num_pts == 100
 
     def test_optimization_parameters(self, tmp_path):
-        from dmft_config import load_sim_config
+        from sop_lake.dmft_config import load_sim_config
         path = self._write_config(tmp_path)
         cfg = load_sim_config(path)
         assert cfg.optimization.alpha == 0.5
@@ -230,7 +230,7 @@ class TestLoadSimConfig:
 
     def test_float_coercion(self, tmp_path):
         """Numeric optimization fields should be coerced to float."""
-        from dmft_config import load_sim_config
+        from sop_lake.dmft_config import load_sim_config
         data = {k: v for k, v in SAMPLE_CONFIG.items()}
         data["optimization"] = {**SAMPLE_CONFIG["optimization"], "alpha": 1}  # integer
         path = self._write_config(tmp_path, data)
@@ -238,13 +238,13 @@ class TestLoadSimConfig:
         assert isinstance(cfg.optimization.alpha, float)
 
     def test_missing_file_raises(self):
-        from dmft_config import load_sim_config
+        from sop_lake.dmft_config import load_sim_config
         with pytest.raises(FileNotFoundError):
             load_sim_config("/nonexistent/path/config.yaml")
 
     def test_epsk_list_computed(self, tmp_path):
         """After loading, epsk_list should be computed automatically."""
-        from dmft_config import load_sim_config
+        from sop_lake.dmft_config import load_sim_config
         path = self._write_config(tmp_path)
         cfg = load_sim_config(path)
         assert len(cfg.system.epsk_list) == 100  # size / sizeA = 100 / 1
@@ -258,7 +258,7 @@ class TestLoadSimConfig:
 class TestGetInputVariables:
 
     def _make_config(self, tmp_path):
-        from dmft_config import load_sim_config
+        from sop_lake.dmft_config import load_sim_config
         config_file = tmp_path / "config.yaml"
         with open(config_file, "w") as f:
             yaml.dump(SAMPLE_CONFIG, f)

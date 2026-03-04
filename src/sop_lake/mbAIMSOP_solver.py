@@ -11,10 +11,10 @@ import scipy.sparse.linalg           as SLA
 import logging
 from itertools                                          import combinations
 
-from SOP                                                import SOP
-from lanczos                                            import bilanczos_basis, lanczos_to_SOP, lanczos_to_SOP_GF
-from utils                                              import exp_value, check_selfadjoint, pruning_sparse_zeros, FermionicOp_to_matrix
-from mb_utils                                           import number_operator, gs_subspace, operator_SD, SD_states, diagonalize_Fock_Hamiltonian, statistical_weights
+from .SOP                                                import SOP
+from .lanczos                                            import bilanczos_basis, lanczos_to_SOP, lanczos_to_SOP_GF
+from .utils                                              import exp_value, check_selfadjoint, pruning_sparse_zeros, FermionicOp_to_matrix
+from .mb_utils                                           import number_operator, gs_subspace, operator_SD, SD_states, diagonalize_Fock_Hamiltonian, statistical_weights
 
 logger = logging.getLogger(__name__)
 class solver:

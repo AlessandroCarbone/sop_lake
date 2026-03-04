@@ -5,11 +5,11 @@ import scipy
 from scipy.interpolate      import interp1d
 from scipy.optimize         import minimize_scalar, minimize
 
-from SOP                    import SOP, antisymm_SOP, adapt_residues, SOP_to_params, params_to_SOP
-from utils                  import RMSE, check_selfadjoint, closest_hermitian
-from dyn_poles_utils        import set_initial_params
-from cost_fn                import cost_func_vemb, grad_cost_func_vemb, grad_cost_func_vemb_sqrt
-from cost_fn_eff            import cost_func_scalar, grad_cost_func_scalar_sqrt, convert_scalar_to_matrix_params
+from .SOP                    import SOP, antisymm_SOP, adapt_residues, SOP_to_params, params_to_SOP
+from .utils                  import RMSE, check_selfadjoint, closest_hermitian
+from .dyn_poles_utils        import set_initial_params
+from .cost_fn                import cost_func_vemb, grad_cost_func_vemb, grad_cost_func_vemb_sqrt
+from .cost_fn_eff            import cost_func_scalar, grad_cost_func_scalar_sqrt, convert_scalar_to_matrix_params
 
 def compute_cost_function(vemb_list,w_list,SOP,weight_list=None,func_type="chi2",paramagnetic=False):
     """ This function returns the cost function of the embedding potential.
