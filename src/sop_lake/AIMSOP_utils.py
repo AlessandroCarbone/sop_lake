@@ -29,17 +29,17 @@ def AIMSOP_matrix(hA,Gamma_list,sigma_list,p_type="std"):
     return h_AIM
 
 def reversed_AIMSOP(G_SOP):
-    """ This function takes care of the reversed algorithmic inversion: given h0 and G as a SOP, returns (w - G^{-1}(w)) as a SOP and an additional constant matrix. SOP means a list of poles and a list of residues
-    as usual. We follow the procedure described by Andrea Ferretti in the proof on the "well-behaved"-ness of the Dyson equation.
+    """ This function takes care of the reversed algorithmic inversion: given G as a SOP, returns (w - G^{-1}(w)) as a SOP and an additional constant matrix. SOP means a list of poles and a list of residues
+    as usual. We follow the procedure described by Andrea Ferretti in the proof on the "well-behaved"-ness of the Dyson equation. See A. Ferretti, T. Chiarotti, and N. Marzari, Phys. Rev. B 110, 045149 (2024).
     This function can be easily generalized when we want to evaluate w + mu - h0 - SOP_2(w) - G^{-1}(w), for instance in the evaluation of the self-energy in DMFT immediately after having retrieved the impurity GF.
     G_SOP : SOP object as defined in SOP.py
     """
     zero_thr = 1e-5
-    if np.array(Z_list).imag.any() != 0:
-        raise ValueError('Error - The poles must be real!')
     num_poles = G_SOP.num_poles
     ntot = G_SOP.dim
     A_list, Z_list = G_SOP.Gamma_list, G_SOP.sigma_list                                                     # List of residues and poles of the input GF
+    if np.array(Z_list).imag.any() != 0:
+        raise ValueError('Error - The poles must be real!')
     Omega  = np.sqrt(max([np.abs(Z)**2 for Z in Z_list]) + 1e-1)                                            # Constant scalar used in the proof by Andrea Ferretti
     h0_F   = sum(-Z_list[k] * A_list[k] for k in range(num_poles))                                          # h0 to be used in the AIM-SOP on the F function defined in the proof   
     Gamma_F_list = [A_list[k] * (Omega**2 - Z_list[k]**2) for k in range(num_poles)]
