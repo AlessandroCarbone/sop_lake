@@ -9,15 +9,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Build Status](https://github.com/AlessandroCarbone/sop_lake/workflows/tests/badge.svg)](https://github.com/AlessandroCarbone/sop_lake/actions)
 
-A Python implementation of Dynamical Mean-Field Theory (DMFT) based on a sum-over-poles (SOP) representation of Green's functions. The framework performs the DMFT self-consistent cycle directly close to the real frequency axis, bypassing the need for analytic continuation from the Matsubara axis.
+A Python implementation of dynamical mean-field theory (DMFT) based on a sum-over-pole (SOP) representations of Green's functions. The framework performs the DMFT self-consistent cycle directly close to the real frequency axis, bypassing the need for analytic continuation from the Matsubara axis.
 
 ## Physical context
 
-The code targets the single-band Hubbard model on a 1D lattice. The DMFT self-consistency maps the lattice problem onto an auxiliary impurity model (AIM) whose embedding potential is represented as a sum of poles:
+The code targets the single-band Hubbard model on a 1D lattice, but it is ready to host any many-body lattice system. The DMFT self-consistency maps the lattice problem onto a fictitious auxiliary impurity problem whose embedding potential $v_\text{emb}$ - usually known as hybridization function - is represented as a sum over poles:
 
 $$v_\text{emb}(\omega) = \sum_{k=1}^{M} \frac{\Gamma_k}{\omega - \sigma_k}$$
 
-At each iteration the embedding potential is fitted to this rational form, the many-body AIM Hamiltonian is built and diagonalized exactly, and the resulting impurity Green's function is fed back into the self-consistency loop via the Dyson equation.
+At each iteration the embedding potential is fitted to this rational form, the many-body auxiliary Hamiltonian for the impurity system is built and diagonalized exactly, and the resulting impurity Green's function is fed back into the self-consistency loop via the Dyson equation.
 
 ## Features
 
@@ -26,16 +26,16 @@ At each iteration the embedding potential is fitted to this rational form, the m
 - SOP fitting of the embedding potential via cost-function minimization (conjugate gradient or steepest descent)
 - Exact diagonalization (ED) impurity solver with support for both dense and sparse ground-state search
 - Bi-Lanczos algorithm as an alternative to full ED for the Green's function
-- Support for real-axis, error-function-shifted, and Matsubara (imaginary) frequency grids
+- Support for Matsubara (imaginary) frequency grids, and any other complex path (default contours: "erf" $\omega + i \eta \text{erf}(\omega)$ and "shift" $\omega - i \eta$)
 
 **SOP representation:**
 - `SOP` class with standard (`std`) and square-root (`sqrt`) residue parametrizations
 - Analytical gradient computation for efficient optimization
-- Algebraic inversion routines (`reversed_AIMSOP`) to extract self-energy and local Green's function directly as SOP objects
+- Algebraic inversion direct and reversed (`reversed_AIMSOP`) routines to extract self-energy and local Green's function directly as SOP objects
 - Particle-hole symmetric (odd-spectrum) constraint
 
 **Physical constraints:**
-- Hermitian residues, positive semi-definite residues, real poles
+- Hermitian residues, positive semi-definite residues, real poles are used to guarantee the well-behaved condition of dynamical quantities
 - Paramagnetic (spin-degenerate) approximation for single-site fragments
 - Configurable convergence on DOS difference between consecutive iterations
 
@@ -115,10 +115,10 @@ embedding:
   num_pts: 10000          # Number of frequency grid points
   beta_T: 1500.0          # Inverse temperature β (for Matsubara frequencies)
   Nw_max: 3000            # Maximum Matsubara frequency index
-  w_edges: [-10, 10]      # Frequency window [ω_min, ω_max]
+  w_edges: [-10, 10]      # Frequency window [w_min, w_max]
   sparse_gs: true         # Use sparse solver for ground-state search
-  gs_search: "std"        # Ground-state method: "std" or "subspaces"
-  solver_method: "std"    # G_imp method: "std" (full ED) or "lanczos"
+  gs_search: "std"        # Ground-state search method: "std" or "subspaces"
+  solver_method: "std"    # Impurity solver method: "std" (full ED) or "lanczos"
 
 optimization:
   mixing_method: "linear" # Self-consistency mixing: "linear"
@@ -287,7 +287,7 @@ If you use this code in your research, please cite:
 ```bibtex
 @software{carbone_sop_lake_2025,
   author    = {Alessandro Carbone},
-  title     = {sop\_lake: Dynamical Mean-Field Theory via Sum-Over-Poles Embedding},
+  title     = {sop\_lake: a sum-over-pole (SOP) framework for dynamical quantum embedding},
   year      = {2025},
   url       = {https://github.com/AlessandroCarbone/sop_lake}
 }
@@ -313,9 +313,10 @@ EPFL, Lausanne, Switzerland
 
 ## References
 
-- A. Georges, G. Kotliar, W. Krauth, M. J. Rozenberg, "Dynamical mean-field theory of strongly correlated fermion systems and the limit of infinite dimensions," *Rev. Mod. Phys.* **68**, 13 (1996)
-- M. Caffarel, W. Krauth, "Exact diagonalization approach to correlated fermions in infinite dimensions: Mott transition and superconductivity," *Phys. Rev. Lett.* **72**, 1545 (1994)
-- R. Haydock, V. Heine, M. J. Kelly, "Electronic structure based on the local atomic environment for tight-binding bands," *J. Phys. C* **5**, 2845 (1972) [Lanczos recursion]
+- A. Georges, G. Kotliar, W. Krauth, and M. J. Rozenberg, "Dynamical mean-field theory of strongly correlated fermion systems and the limit of infinite dimensions", *Rev. Mod. Phys.* **68**, 13 (1996)
+- M. Caffarel, and W. Krauth, "Exact diagonalization approach to correlated fermions in infinite dimensions: Mott transition and superconductivity", *Phys. Rev. Lett.* **72**, 1545 (1994)
+- A. Amaricci, L. Crippa, A. Scazzola, F. Petocchi, G. Mazza, L. de Medici, and M. Capone, "EDIpack: A parallel exact diagonalization package for quantum impurity problems", *Comp. Phys. Comm.* **273** (2022)
+- A. Carbone, M. Capone, N. Marzari, and T. Chiarotti, in preparation (2026)
 
 ---
 
