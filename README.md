@@ -73,8 +73,8 @@ pip install -e ".[dev]"
 ### Basic usage
 
 ```python
-from src.dmft_config import load_sim_config
-from src.dmft_simulation import dmft_simulation
+from sop_lake.dmft_config import load_sim_config
+from sop_lake.dmft_simulation import dmft_simulation
 
 # Load configuration from YAML
 config = load_sim_config("examples/config_hubbard.yaml")
@@ -140,29 +140,30 @@ optimization:
 
 ```
 sop_lake/
-├── src/                            # Main source code
-│   ├── __init__.py                 # Package exports
-│   ├── dmft_main.py                # Entry-point script
-│   ├── dmft_simulation.py          # Main DMFT self-consistent loop
-│   ├── dmft_config.py              # Configuration dataclasses and YAML loader
-│   │
-│   ├── SOP.py                      # Sum-over-poles class and parameter utilities
-│   ├── AIMSOP_utils.py             # AIM-SOP matrix construction and reversed inversion
-│   ├── embedding_utils.py          # Self-consistency, frequency axes, mixing
-│   ├── mbAIMSOP_solver.py          # Many-body exact diagonalization solver
-│   │
-│   ├── hubbard.py                  # 1D Hubbard Hamiltonian (via qiskit_nature)
-│   ├── lanczos.py                  # Bi-Lanczos algorithm for Green's functions
-│   ├── mb_utils.py                 # Many-body operators, Slater determinants, GF utilities
-│   │
-│   ├── dyn_poles.py                # SOP fitting via cost-function minimization
-│   ├── dyn_poles_utils.py          # Bounds, peak finding, parameter utilities
-│   ├── cost_fn.py                  # Cost function and gradient (matrix residues)
-│   ├── cost_fn_eff.py              # Cost function and gradient (scalar/paramagnetic)
-│   ├── cost_fn_nogrid.py           # Grid-free cost function via Lorentzian overlaps
-│   │
-│   ├── data_io.py                  # JSON I/O, result reading, and plotting
-│   └── utils.py                    # Matrix checks, numerical utilities, sparse helpers
+├── src/                            # Source root (PEP 517 layout)
+│   └── sop_lake/                   # Installable package
+│       ├── __init__.py             # Package exports
+│       ├── dmft_main.py            # Entry-point script
+│       ├── dmft_simulation.py      # Main DMFT self-consistent loop
+│       ├── dmft_config.py          # Configuration dataclasses and YAML loader
+│       │
+│       ├── SOP.py                  # Sum-over-poles class and parameter utilities
+│       ├── AIMSOP_utils.py         # AIM-SOP matrix construction and reversed inversion
+│       ├── embedding_utils.py      # Self-consistency, frequency axes, mixing
+│       ├── mbAIMSOP_solver.py      # Many-body exact diagonalization solver
+│       │
+│       ├── hubbard.py              # 1D Hubbard Hamiltonian (via qiskit_nature)
+│       ├── lanczos.py              # Bi-Lanczos algorithm for Green's functions
+│       ├── mb_utils.py             # Many-body operators, Slater determinants, GF utilities
+│       │
+│       ├── dyn_poles.py            # SOP fitting via cost-function minimization
+│       ├── dyn_poles_utils.py      # Bounds, peak finding, parameter utilities
+│       ├── cost_fn.py              # Cost function and gradient (matrix residues)
+│       ├── cost_fn_eff.py          # Cost function and gradient (scalar/paramagnetic)
+│       ├── cost_fn_nogrid.py       # Grid-free cost function via Lorentzian overlaps
+│       │
+│       ├── data_io.py              # JSON I/O, result reading, and plotting
+│       └── utils.py                # Matrix checks, numerical utilities, sparse helpers
 │
 ├── tests/                          # Unit and integration tests
 │   ├── __init__.py
@@ -218,12 +219,12 @@ The DMFT self-consistency cycle implemented in `dmft_simulation.run()`:
 
 ## Key modules
 
-### `SOP` class ([src/SOP.py](src/SOP.py))
+### `SOP` class ([src/sop_lake/SOP.py](src/sop_lake/SOP.py))
 
 Stores and evaluates a sum-over-poles rational function G(ω) = Σ_k Γ_k / (ω − σ_k):
 
 ```python
-from src.SOP import SOP
+from sop_lake.SOP import SOP
 import numpy as np
 
 # Single-pole 2×2 example
@@ -239,20 +240,20 @@ Two parametrizations are available:
 - `p_type="std"`: stores Γ_k directly, evaluates Σ_k Γ_k / (ω − σ_k)
 - `p_type="sqrt"`: stores √Γ_k, evaluates Σ_k (√Γ_k)² / (ω − σ_k) — ensures positive-semidefinite residues
 
-### Configuration system ([src/dmft_config.py](src/dmft_config.py))
+### Configuration system ([src/sop_lake/dmft_config.py](src/sop_lake/dmft_config.py))
 
 Four composable dataclasses (`Hubbard_system_config`, `input_config`, `embedding_config`, `optimization_config`) bundled in `sim_config`. Load from YAML with:
 
 ```python
-from src.dmft_config import load_sim_config
+from sop_lake.dmft_config import load_sim_config
 config = load_sim_config("path/to/config.yaml")
 ```
 
-### Impurity solver ([src/mbAIMSOP_solver.py](src/mbAIMSOP_solver.py))
+### Impurity solver ([src/sop_lake/mbAIMSOP_solver.py](src/sop_lake/mbAIMSOP_solver.py))
 
 Builds the many-body AIM Hamiltonian and solves for G_imp via exact diagonalization. Supports sparse ground-state search and the bi-Lanczos continued-fraction method for large systems.
 
-### Embedding and self-consistency ([src/embedding_utils.py](src/embedding_utils.py))
+### Embedding and self-consistency ([src/sop_lake/embedding_utils.py](src/sop_lake/embedding_utils.py))
 
 Contains:
 - `frequency_axis()` — constructs real, shifted, or Matsubara frequency grids
