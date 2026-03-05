@@ -185,25 +185,25 @@ def DOS_diff(G_list,G_list2):
     diff          = sum(DOS_diff**2 for DOS_diff in DOS_diff_list) / len(G_list)                                                        
     return diff
 
-def get_SigmaA_SOP(Gimp_SOP,vemb_SOP,mu,hA_1):
+def get_SigmaA_SOP(Gimp_SOP,SOP_vemb,mu,hA_1):
     """ This function returns the self-energy Sigma_A as a SOP object, given the impurity GF and the embedding potential as SOP objects, and the non-interacting Hamiltonian of the fragment, using the hypotheses of DMFT on the local self-energy and Green's function. 
     This is done by performing the reversed algorithmic inversion to get the self-energy Sigma_A as a SOP object.
     """
     const_term, B2_list, Omega_list = reversed_AIMSOP(Gimp_SOP)                                                # Constant term and residues and poles of the self-energy Sigma_A as a SOP object
     const_term_SigmaA = mu * np.identity(Gimp_SOP.dim,dtype=np.complex128) - hA_1 - const_term                 # Constant term of the self-energy Sigma_A                       
-    res_list_SigmaA   = adapt_residues(vemb_SOP.Gamma_list,vemb_SOP.p_type,"std") + B2_list                    # Residues of the self-energy Sigma_A
+    res_list_SigmaA   = adapt_residues(SOP_vemb.Gamma_list,SOP_vemb.p_type,"std") + B2_list                    # Residues of the self-energy Sigma_A
     res_list_SigmaA   = [-1 * res for res in res_list_SigmaA]                                                  
-    pol_list_SigmaA   = vemb_SOP.sigma_list + list(Omega_list)                                                 # Poles of the self-energy Sigma_A
+    pol_list_SigmaA   = SOP_vemb.sigma_list + list(Omega_list)                                                 # Poles of the self-energy Sigma_A
     SigmaA_SOP = SOP(res_list_SigmaA, pol_list_SigmaA, p_type="std")
     return SigmaA_SOP, const_term_SigmaA
 
-def get_Gloc_SOP(vemb_SOP,Gimp_SOP,mu,hA_1,epsk_list):
+def get_Gloc_SOP(SOP_vemb,Gimp_SOP,mu,hA_1,epsk_list):
     """ This function return the local Green's function G_loc as a SOP object, given the embedding potential and the impurity GF as SOP objects, and the non-interacting Hamiltonian of the fragment using the local interaction hypothesis, as in DMFT. 
     This is done by performing the reversed algorithmic inversion to get the self-energy Sigma_A as a SOP object, and then evaluating the local Green's function G_loc from the self-energy via the Dyson equation.
     """
     ntot  = Gimp_SOP.dim
     I_loc = np.identity(ntot,dtype=np.complex128)
-    SigmaA_SOP, const_term_SigmaA = get_SigmaA_SOP(Gimp_SOP,vemb_SOP,mu,hA_1)                                              # Self-energy Sigma_A as a SOP object and its constant term
+    SigmaA_SOP, const_term_SigmaA = get_SigmaA_SOP(Gimp_SOP,SOP_vemb,mu,hA_1)                                              # Self-energy Sigma_A as a SOP object and its constant term
     A_list, Z_list = [], []
     for ind,epsk in enumerate(epsk_list):
         h0_inv   = (epsk - mu) * I_loc + const_term_SigmaA
@@ -220,14 +220,14 @@ def get_Gloc_SOP(vemb_SOP,Gimp_SOP,mu,hA_1,epsk_list):
     Gloc_SOP = SOP(A_list,Z_list,p_type="std")
     return Gloc_SOP
 
-def get_new_vemb_SOP(vemb_SOP,Gimp_SOP,mu,hA_1,epsk_list):
+def get_new_vemb_SOP(SOP_vemb,Gimp_SOP,mu,hA_1,epsk_list):
     """ This function returns the new embedding potential as a SOP object, calculating the local Green's function and the self-energy as SOP objects, and the non-interacting Hamiltonian of the fragment, using the hypotheses
     of DMFT on the local self-energy and Green's function. This is done by performing the reversed algorithmic inversion to get the new embedding potential as a SOP object.
     """
     ntot  = Gimp_SOP.dim
     I_loc = np.identity(ntot,dtype=np.complex128)
-    SigmaA_SOP, const_term_SigmaA = get_SigmaA_SOP(Gimp_SOP,vemb_SOP,mu,hA_1)                                           # Self-energy Sigma_A as a SOP object and its constant term
-    Gloc_SOP = get_Gloc_SOP(vemb_SOP,Gimp_SOP,mu,hA_1,epsk_list)                                                        # Local Green's function G_loc as a SOP object
+    SigmaA_SOP, const_term_SigmaA = get_SigmaA_SOP(Gimp_SOP,SOP_vemb,mu,hA_1)                                           # Self-energy Sigma_A as a SOP object and its constant term
+    Gloc_SOP = get_Gloc_SOP(SOP_vemb,Gimp_SOP,mu,hA_1,epsk_list)                                                        # Local Green's function G_loc as a SOP object
     const_term, B2_list, Omega_list = reversed_AIMSOP(Gloc_SOP)                                                         # Constant term and residues and poles of (omega - Gloc^{-1}) as a SOP object
     const_term_vemb = mu * I_loc - hA_1 - const_term_SigmaA - const_term                                                # Constant term of the new embedding potential
     res_list_vemb   = adapt_residues(SigmaA_SOP.Gamma_list,SigmaA_SOP.p_type,"std") + B2_list                           # Residues of the new embedding potential
