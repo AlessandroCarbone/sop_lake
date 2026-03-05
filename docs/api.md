@@ -6,7 +6,7 @@
 Main simulation class for running DMFT calculations.
 
 ```python
-from src.dmft_simulation import dmft_simulation
+from sop_lake.dmft_simulation import dmft_simulation
 sim = dmft_simulation(config)
 sim.run(output_file_names=output_names)
 ```
@@ -17,7 +17,7 @@ sim.run(output_file_names=output_names)
 Load simulation configuration from YAML files.
 
 ```python
-from src.dmft_config import load_sim_config
+from sop_lake.dmft_config import load_sim_config
 config = load_sim_config("config.yaml")
 ```
 
@@ -28,15 +28,15 @@ Standard one-dimensional single-band Hubbard model implementation.
 
 ## Solvers
 
-### Full diagonalization solver
+### Full diagonalization solver ("std")
 Uses full exact diagonalization to diagonalize the auxiliary Hamiltonian defined by the many-body algorithmic inversion theory.
 
-### Bi-Lanczos method
+### Bi-Lanczos method ("lanczos")
 Performs the bi-Lanczos algorithm to diagonalize the auxiliary Hamiltonian defined by the many-body algorithmic inversion theory.
 
 ## Utilities
 
-### Dynamic Poles
+### Dynamics of poles
 Calculate dynamic poles and spectral functions.
 
 ### Lanczos Decomposition

@@ -5,22 +5,25 @@
 ```
 sop_lake/
 ├── src/
-│   ├── __init__.py                    # Package initialization
-│   ├── dmft_main.py                   # CLI entry point
-│   ├── dmft_simulation.py             # Main DMFT simulation class
-│   ├── dmft_config.py                 # Configuration loader
-│   ├── dmft_simulation.py             # DMFT loop implementation
-│   ├── mbAIMSOP_solver.py            # AIM solver implementation
-│   ├── hubbard.py                    # Hubbard model definition
-│   ├── dyn_poles.py                  # Dynamic poles calculation
-│   ├── dyn_poles_utils.py            # Dynamic poles utilities
-│   ├── embedding_utils.py            # Embedding optimization
-│   ├── lanczos.py                    # Lanczos algorithm
-│   ├── cost_fn.py                    # Cost functions
-│   ├── cost_fn_eff.py                # Effective cost functions
-│   ├── mb_utils.py                   # Many-body utilities
-│   ├── data_io.py                    # I/O utilities
-│   └── utils.py                      # General utilities
+│   └── sop_lake/
+│       ├── __init__.py                    # Package initialization
+│       ├── dmft_main.py                   # CLI entry point
+│       ├── dmft_simulation.py             # DMFT loop implementation
+│       ├── dmft_config.py                 # Configuration loader
+│       ├── mbAIMSOP_solver.py             # AIM solver implementation
+│       ├── SOP.py                         # Sum-of-poles representation
+│       ├── AIMSOP_utils.py                # AIM-SOP utilities
+│       ├── hubbard.py                     # Hubbard model definition
+│       ├── dyn_poles.py                   # Dynamic poles calculation
+│       ├── dyn_poles_utils.py             # Dynamic poles utilities
+│       ├── embedding_utils.py             # Embedding optimization
+│       ├── lanczos.py                     # Lanczos algorithm
+│       ├── cost_fn.py                     # Cost functions
+│       ├── cost_fn_eff.py                 # Effective cost functions
+│       ├── cost_fn_nogrid.py              # Grid-free cost functions
+│       ├── mb_utils.py                    # Many-body utilities
+│       ├── data_io.py                     # I/O utilities
+│       └── utils.py                       # General utilities
 ├── tests/                            # Test suite
 │   ├── test_models.py               # Model tests
 │   ├── test_solvers.py              # Solver tests
@@ -60,9 +63,11 @@ sop_lake/
 - Provides default values
 - Type conversion and checking
 
-### 3. Impurity Solver (`mbAIMSOP_solver.py`)
+### 3. Impurity Solver (`mbAIMSOP_solver.py`, `SOP.py`, `AIMSOP_utils.py`)
 - Solves effective (single-site or cluster) impurity problem
 - Uses many-body AIM-SOP to find the auxiliary Hamiltonian for the impurity problem
+- `SOP.py` implements the sum-of-poles representation of Green's functions
+- `AIMSOP_utils.py` provides helper routines for the AIM-SOP procedure
 - Extracts local self-energy and Green's functions
 
 ### 4. Model Definitions (`hubbard.py`)
@@ -72,14 +77,15 @@ sop_lake/
 
 ### 5. Numerical Methods
 
-#### Lanczos Algorithm (`lanczos.py`)
+#### Lanczos algorithm (`lanczos.py`)
 - Efficient sparse eigensolver
 - Used for diagonalization
 
-#### Dynamic Poles (`dyn_poles.py`, `cost_fn.py`, `cost_fn_eff.py`)
+#### Dynamics of poles (`dyn_poles.py`, `cost_fn.py`, `cost_fn_eff.py`, `cost_fn_nogrid.py`)
 - Evolve the parameters of the simulation
 - Cost function minimization and definition
-- Takes care of what typycally is the fitting strategy of a DMFT self-consistent cycle
+- `cost_fn_nogrid.py` provides a grid-free variant of the cost function
+- Takes care of what typically is the fitting strategy of a DMFT self-consistent cycle
 
 ### 6. I/O and Utilities
 - Configuration and data I/O (`data_io.py`)

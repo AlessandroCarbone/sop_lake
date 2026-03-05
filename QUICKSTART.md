@@ -21,8 +21,8 @@ Quick start guide for sop_lake
 # MINIMAL EXAMPLE
 # ==============================================================
 
-from src.dmft_config import load_sim_config
-from src.dmft_simulation import dmft_simulation
+from sop_lake.dmft_config import load_sim_config
+from sop_lake.dmft_simulation import dmft_simulation
 
 # Load your configuration
 config = load_sim_config("examples/config_hubbard_single_band.yaml")
@@ -78,6 +78,6 @@ sim.run(output_file_names={
 # 1. README.md - Update with your project details
 # 2. setup.py - Update author and contact info
 # 3. LICENSE - Replace with your preferred license
-# 4. src/dmft_main.py - Entry point for CLI
+# 4. sop_lake/dmft_main.py - Entry point for CLI
 # 5. docs/theory.md - Add your theoretical background
 # 6. examples/*.yaml - Add your own configurations

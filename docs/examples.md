@@ -54,9 +54,9 @@ optimization:
 ```python
 import logging, os
 from datetime           import datetime
-from data_io            import clean_folder
-from dmft_config        import load_sim_config
-from dmft_simulation    import dmft_simulation
+from .data_io            import clean_folder
+from .dmft_config        import load_sim_config
+from .dmft_simulation    import dmft_simulation
 
 clean_folder(fig_dir="figures")
 
