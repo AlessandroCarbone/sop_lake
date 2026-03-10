@@ -2,7 +2,6 @@ import numpy                        as np
 import json, os
 try:
     import matplotlib
-    matplotlib.use('Agg')                       # Use a non-interactive backend for plotting
     import matplotlib.pyplot            as plt
     matplotlib.rcParams['text.usetex'] = False
     _HAS_MATPLOTLIB = True
