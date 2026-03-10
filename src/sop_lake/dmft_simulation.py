@@ -284,7 +284,7 @@ class dmft_simulation:
     
     def write_params(self):
         logger.info("\nSystem: U = {} | N = {} | num_poles = {} | mu_fixed = {}".format(self.config.system.U,self.config.system.size,self.config.embedding.num_poles,self.config.embedding.mu_fixed))
-        axis_text = " | beta_T = {} | Nw_max = {}".format(self.config.embedding.matsubara_params["beta"],self.config.embedding.matsubara_params["Nw_max"]) if self.config.embedding.axis == "imaginary" else " | eta_axis = {}".format(self.config.embedding.eta_axis)
+        axis_text = " | beta_T = {} | Nw_max = {}".format(self.config.embedding.matsubara_params["beta"],self.config.embedding.matsubara_params["Nw_max"]) if self.config.embedding.axis == "imaginary" else " | eta_axis = {} | num_pts = {} | w_edges = {}".format(self.config.embedding.eta_axis, self.config.embedding.num_pts, self.config.embedding.w_edges)
         logger.info("\n- axis = {} | p_type = {} {}".format(self.config.embedding.axis,self.config.embedding.p_type,axis_text))
         logger.info("\n- max_iter = {} | p_type = {} | mixing_method = {} with alpha = {} | solver_method = {}".format(self.config.embedding.max_iter,self.config.embedding.p_type,self.config.optimization.mixing_method,self.config.optimization.alpha,self.config.embedding.solver_method))
         logger.info("\n- opt_method = {} with opt_params = {}".format(self.config.optimization.opt_method,self.config.optimization.opt_params))
