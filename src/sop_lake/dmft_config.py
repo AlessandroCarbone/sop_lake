@@ -15,12 +15,12 @@ from .data_io            import read_dmft_data, read_vemb_data, read_conv_histor
 logger = logging.getLogger(__name__)
 @dataclass
 class Hubbard_system_config:
-    size : int              # Total number of sites in the lattice
-    t    : float            # Hopping parameter
-    U    : float            # On-site interaction
-    sizeA: int              # Number of sites in the fragment (impurity), referred to as "A" in the code
-    Np   : float            # Particle density per site
-    bc   : int              # Boundary conditions: 1 for open, 0 for closed
+    size  : int              # Total number of sites in the lattice
+    t     : float            # Hopping parameter
+    U     : float            # On-site interaction
+    sizeA : int              # Number of sites in the fragment (impurity), referred to as "A" in the code
+    Np    : float            # Particle density per site
+    bc    : int              # Boundary conditions: 1 for open, 0 for closed
     Np_tot  : float = field(init=False)
     epsk_list: list = field(init=False, default_factory=list)
 
