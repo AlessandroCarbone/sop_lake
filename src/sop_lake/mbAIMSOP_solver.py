@@ -17,6 +17,12 @@ from .utils                                              import exp_value, check
 from .mb_utils                                           import number_operator, gs_subspace, operator_SD, SD_states, diagonalize_Fock_Hamiltonian, statistical_weights
 
 logger = logging.getLogger(__name__)
+
+def make_GF_params_SOP(C_list,Z_list):
+    """ This function transforms a list of residues and poles into a SOP-class object."""
+    res_list = [sum(C_list[gs_ind][k] for gs_ind in range(len(C_list))) / len(C_list) for k in range(len(Z_list))]
+    pol_list = Z_list
+    return SOP(res_list, pol_list)
 class solver:
     """ Solver for the DMFT cycle based on the exact diagonalization of the AIM Hamiltonian H_AIM. It returns
     the local Green's function, g.
@@ -298,6 +304,5 @@ class solver:
     def make_Gimp_SOP(self, C_AIM_list, Z_AIM_list):
         """ This function constructs transforms the residues and poles of the Green's function G_imp into a SOP-class object.
         """
-        res_Gimp_list = [sum(C_AIM_list[gs_ind][k] for gs_ind in range(len(C_AIM_list))) / len(C_AIM_list) for k in range(len(Z_AIM_list))]
-        pol_Gimp_list = Z_AIM_list
-        return SOP(res_Gimp_list, pol_Gimp_list)
+        return make_GF_params_SOP(C_AIM_list,Z_AIM_list)
+
