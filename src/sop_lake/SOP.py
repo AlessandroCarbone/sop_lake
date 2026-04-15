@@ -199,7 +199,9 @@ class SOP:
 
     def make_poles_real(self):
         sigma_list = self.sigma_list
-        self.sigma_list = np.array(sigma_list).real if np.allclose(np.array(sigma_list),np.array(sigma_list).real) == False else sigma_list
+        if not np.allclose(np.array(sigma_list), np.array(sigma_list).real):
+            raise ValueError('Error - Poles have significant imaginary parts and cannot be made real!')
+        self.sigma_list = list(np.array(sigma_list).real)
     
     def make_residues_real_diagonal(self):
         Gamma_list = self.Gamma_list
