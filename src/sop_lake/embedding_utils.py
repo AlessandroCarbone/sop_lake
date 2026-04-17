@@ -191,7 +191,7 @@ def get_SigmaA_SOP(Gimp_SOP,SOP_vemb,mu,hA_1):
     """ This function returns the self-energy Sigma_A as a SOP object, given the impurity GF and the embedding potential as SOP objects, and the non-interacting Hamiltonian of the fragment, using the hypotheses of DMFT on the local self-energy and Green's function. 
     This is done by performing the reversed algorithmic inversion to get the self-energy Sigma_A as a SOP object.
     """
-    const_term, B2_list, Omega_list = reversed_AIMSOP(Gimp_SOP)                                                # Constant term and residues and poles of the self-energy Sigma_A as a SOP object
+    const_term, B2_list, Omega_list = reversed_AIMSOP(Gimp_SOP)                                                # Constant term and SOP associated with (w - G_imp^{-1})
     const_term_SigmaA = mu * np.identity(Gimp_SOP.dim,dtype=np.complex128) - hA_1 - const_term                 # Constant term of the self-energy Sigma_A                       
     res_list_SigmaA   = adapt_residues(SOP_vemb.Gamma_list,SOP_vemb.p_type,"std") + B2_list                    # Residues of the self-energy Sigma_A
     res_list_SigmaA   = [-1 * res for res in res_list_SigmaA]                                                  
