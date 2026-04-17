@@ -18,8 +18,12 @@ def AIMSOP_matrix(hA,Gamma_list,sigma_list,p_type="std"):
     for i in range(ntot):
         for j in range(ntot):
             h_AIM[i,j] = hA[i,j]
-
-    Gamma_sqrt_list = Gamma_list if p_type == "sqrt" else [LA.sqrtm(Gamma) for Gamma in Gamma_list]
+    if p_type == "sqrt":
+        Gamma_sqrt_list = Gamma_list
+    elif p_type == "std":               # N.B. This case slows down dramatically the AIMSOP procedure
+        Gamma_sqrt_list = [np.zeros_like(Gamma) if np.allclose(Gamma, 0) else LA.sqrtm(Gamma) for Gamma in Gamma_list]
+    else:
+        raise ValueError("Error - p_type value doesn't exist")
     for k in range(num_poles):
         for i in range(ntot):
             h_AIM[ntot*(k+1)+i,ntot*(k+1)+i] = sigma_list[k]
