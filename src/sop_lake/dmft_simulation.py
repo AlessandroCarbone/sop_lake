@@ -31,7 +31,8 @@ class dmft_simulation:
             matsubara_params={
                 "beta": config.embedding.beta_T,
                 "Nw_max": config.embedding.Nw_max
-            }
+            },
+            w_edges=config.embedding.w_edges
         )
         w_tan_list      = np.tan(np.linspace(0,np.pi / 2,10000)[1:-1])                      # List of imaginary frequencies to be placed on the imaginary semi-axis - Tangent grid
         w_isa_list      = [-complex(0,w) for w in w_tan_list]                               # List of imaginary frequencies for the calculation of the number of particles on the imaginary semi-axis (isa)
@@ -310,9 +311,9 @@ class dmft_simulation:
             json.dump(data_dict, f, indent=2)
     
     def save_vemb_SOP(self, file):
-        vemb_list, SOP = self.vemb_list, self.SOP
+        vemb_list, SOP_vemb = self.vemb_list, self.SOP
         vemb_dict = mat_list_to_dict(vemb_list)
-        SOP_dict = SOP.to_dict()
+        SOP_dict = SOP_vemb.to_dict()
         data_dict = {}
         data_dict["vemb_list"] = vemb_dict
         data_dict.update(SOP_dict)
