@@ -49,6 +49,11 @@ def read_conv_history(file: str):
         conv_history = json.load(f)
     return conv_history
 
+def read_opt_data(file: str):
+    with open(file,"r") as f:
+        opt_data = json.load(f)
+    return opt_data
+
 def array_to_dict(array):
     """ Converts a numpy array to a dictionary with "real" and "imag" keys for JSON serialization."""
     return {"real": array.real.tolist(), "imag": array.imag.tolist()}
