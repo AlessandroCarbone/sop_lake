@@ -121,12 +121,12 @@ def create_mbAIMSOP_Hamiltonian(HA,SOP,input_matrices=[None,None,None],dmft_sim=
     H_AIM = HA_AIM + hb_AIM + hc_AIM
     return H_AIM
 
-def self_consistency_DMFT(SOP,Gimp_SOP,epsk_list,hA_1,w_list,mu,paramagnetic=False):
+def self_consistency_DMFT(SOP_vemb,Gimp_SOP,epsk_list,hA_1,w_list,mu,paramagnetic=False):
     """ This function performs the operation of self-consistency typical of a DMFT simulation. Specifically, this is the upfolding from the
     impurity Green's function to the local (lattice) Green's function and the self-energy."""
-    ntot = SOP.dim
+    ntot = SOP_vemb.dim
     Nk   = len(epsk_list)
-    v_emb_fit_list = SOP.evaluate(w_list)
+    v_emb_fit_list = SOP_vemb.evaluate(w_list)
     
     # Finding new initial values: SigmaA, GA = G_loc
     Gimp_list      = Gimp_SOP.evaluate(w_list)                                                  # Impurity GF G_imp from the residues and poles returned by the solver
