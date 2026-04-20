@@ -127,10 +127,9 @@ def self_consistency_DMFT(SOP,Gimp_SOP,epsk_list,hA_1,w_list,mu,paramagnetic=Fal
     ntot = SOP.dim
     Nk   = len(epsk_list)
     v_emb_fit_list = SOP.evaluate(w_list)
-    res_Gimp_list, pol_Gimp_list = [Gimp_SOP.Gamma_list], Gimp_SOP.sigma_list                   # Residues have to be put inside a list because compute_avg_GF handles the possible degeneracy          
     
     # Finding new initial values: SigmaA, GA = G_loc
-    Gimp_list      = compute_avg_GF(res_Gimp_list, pol_Gimp_list, w_list)                       # Impurity GF G_imp from the residues and poles returned by the solver
+    Gimp_list      = Gimp_SOP.evaluate(w_list)                                                  # Impurity GF G_imp from the residues and poles returned by the solver
     IA_mat         = np.identity(ntot,dtype=np.complex128)
     if paramagnetic == True and np.allclose(hA_1,hA_1[0,0] * IA_mat):
         SigmaA_list = [(w + mu - hA_1[0,0] - v_emb_fit_list[iw][0,0] - pow(Gimp_list[iw][0,0],-1)) * IA_mat for iw,w in enumerate(w_list)]                # Self-energy from the impurity GF and non-interacting GF on the fragment
